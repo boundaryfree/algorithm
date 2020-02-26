@@ -56,6 +56,17 @@ def shell_sort(elements):
 @time_profiling
 def merge_sort(elements):
     __merge_sort(elements)
+
+@time_profiling
+def merge_sort_bu(elements):
+    length = len(elements)
+    step = 1
+    while step < length:
+        low = 0
+        while low < length - step:
+            merge(elements, low, low + step - 1, min(low + step * 2 - 1, length - 1))
+            low += step * 2
+        step *= 2
     
 def __merge_sort(elements, low=None, high=None):
     if low is None:
@@ -120,6 +131,7 @@ sort_alg_map = {
     # 'insert': insert_sort,
     # 'shell sort': shell_sort,
     'merge sort': merge_sort,
+    'merge sort bottom to up': merge_sort_bu,
 }
 
 def test(elements, algorithms=[]):
@@ -141,7 +153,7 @@ def test(elements, algorithms=[]):
 
         
 if __name__ == '__main__':
-    count = 50000
+    count = 10000
     elements = [random.randint(0, count - 1) for x in range(0, count)]
     # elements = [x for x in range(0, count)]
     # print('Original list: {}'.format(elements))
