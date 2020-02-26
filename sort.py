@@ -1,20 +1,5 @@
-import random
-from datetime import datetime
-from functools import wraps
 import copy
-
-def time_profiling(fun):
-    @wraps(fun)
-    def wrapper(*args, **kwargs):
-        begin_time = datetime.now()
-        result = fun(*args, **kwargs)
-        cost_time = datetime.now() - begin_time
-
-        print('{} cost time: {}'.format(fun.__name__, cost_time))
-
-        return result
-
-    return wrapper
+from utils import time_profiling
 
 @time_profiling
 def select_sort(items):
@@ -118,44 +103,3 @@ def exchange_element(elements, index1, index2):
         return
     
     elements[index1], elements[index2] = elements[index2], elements[index1]
-
-def is_sorted(items):
-    for index, it in enumerate(items):
-        if index > 0 and it < items[index - 1]:
-            return False
-
-    return True
-
-sort_alg_map = {
-    # 'select': select_sort,
-    # 'insert': insert_sort,
-    # 'shell sort': shell_sort,
-    'merge sort': merge_sort,
-    'merge sort bottom to up': merge_sort_bu,
-}
-
-def test(elements, algorithms=[]):
-    if not algorithms:
-        algorithms = sort_alg_map.keys()
-    
-    for alg_name in algorithms:
-        fun = sort_alg_map.get(alg_name, None)
-        if not fun:
-            print('{} sort algorithm implementation NOT found'.format(alg_name))
-            continue
-        
-        sorting_elements = copy.deepcopy(elements)
-        print('-' * 20 + 'Begin executing {}, count {}'.format(alg_name, len(sorting_elements)) + '-' * 20)
-        fun(sorting_elements)
-        print('Sort result: {}'.format(is_sorted(sorting_elements)))
-        # print('Sorted list: {}'.format(sorting_elements))
-        print('-' * 20 + 'End executing {}'.format(alg_name) + '-' * 20)
-
-        
-if __name__ == '__main__':
-    count = 10000
-    elements = [random.randint(0, count - 1) for x in range(0, count)]
-    # elements = [x for x in range(0, count)]
-    # print('Original list: {}'.format(elements))
-
-    test(elements)
