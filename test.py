@@ -1,13 +1,14 @@
 import copy
 import random
-from sort import select_sort, insert_sort, shell_sort, merge_sort, merge_sort_bu
+from sort import select_sort, insert_sort, shell_sort, merge_sort, merge_sort_bu, quick_sort
 
 sort_alg_map = {
     # 'select': select_sort,
     # 'insert': insert_sort,
     # 'shell sort': shell_sort,
-    'merge sort': merge_sort,
-    'merge sort bottom to up': merge_sort_bu,
+    # 'merge sort': merge_sort,
+    # 'merge sort bottom to up': merge_sort_bu,
+    'quick sort': quick_sort
 }
 
 def test(elements, algorithms=[]):
@@ -35,8 +36,9 @@ def is_sorted(items):
     return True
         
 if __name__ == '__main__':
-    count = 10000
+    count = 100000
     elements = [random.randint(0, count - 1) for x in range(0, count)]
+    # elements = [2, 4, 3, 1, 2]
     # elements = [x for x in range(0, count)]
     # print('Original list: {}'.format(elements))
 

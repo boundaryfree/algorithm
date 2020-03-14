@@ -11,14 +11,14 @@ def select_sort(items):
                 min = items[j]
                 min_index = j
         if min_index != i:
-            exchange_element(items, i, min_index)
+            __exchange_element(items, i, min_index)
 
 @time_profiling
 def insert_sort(elements):
     for i, e in enumerate(elements):
         for j in reversed(range(0, i)):
             if elements[j] > elements[j + 1]:
-                exchange_element(elements, j, j + 1)
+                __exchange_element(elements, j, j + 1)
             else:
                 break
 
@@ -32,7 +32,7 @@ def shell_sort(elements):
         for i in range(h, len(elements), h):
             for j in reversed(range(h, i + 1, h)):
                 if elements[j] < elements[j - h]:
-                    exchange_element(elements, j, j - h)
+                    __exchange_element(elements, j, j - h)
                 else:
                     break
 
@@ -49,10 +49,14 @@ def merge_sort_bu(elements):
     while step < length:
         low = 0
         while low < length - step:
-            merge(elements, low, low + step - 1, min(low + step * 2 - 1, length - 1))
+            __merge(elements, low, low + step - 1, min(low + step * 2 - 1, length - 1))
             low += step * 2
         step *= 2
-    
+
+@time_profiling
+def quick_sort(elements):
+    __quick_sort(elements)
+
 def __merge_sort(elements, low=None, high=None):
     if low is None:
         low = 0
@@ -65,13 +69,43 @@ def __merge_sort(elements, low=None, high=None):
     mid = int((low + high) / 2)
     __merge_sort(elements, low, mid)
     __merge_sort(elements, mid + 1, high)
-    merge(elements, low, mid, high)
+    __merge(elements, low, mid, high)
 
-@time_profiling
-def quick_sort(elements):
-    pass
+def __quick_sort(elements, low=None, high=None):
+    if low is None:
+        low = 0
+    if high is None:
+        high = len(elements) - 1
 
-def merge(elements, low, mid, high):
+    if low >= high:
+        return
+
+    mid = __partition(elements, low, high)
+    __quick_sort(elements, low, mid - 1)
+    __quick_sort(elements, mid + 1, high)
+
+def __partition(elements, low, high):
+    pos_element = elements[low]
+    lf_index = low + 1
+    rt_index = high
+    while True:
+        while lf_index < high and elements[lf_index] <= pos_element:
+            lf_index += 1
+        while rt_index > low and elements[rt_index] > pos_element:
+            rt_index -= 1
+
+        if lf_index >= rt_index:
+            break
+        
+        __exchange_element(elements, lf_index, rt_index)
+        # print('inner exchage: {}'.format(elements))
+
+    __exchange_element(elements, low, rt_index)
+    # print('outter exchage: {}'.format(elements))
+
+    return rt_index
+
+def __merge(elements, low, mid, high):
     copied_elements = copy.copy(elements)
     for i in range(0, high - low + 1):
         copied_elements[i] = elements[low + i]
@@ -98,7 +132,7 @@ def merge(elements, low, mid, high):
                 elements[i] = copied_elements[l_index - low]
                 l_index += 1
 
-def exchange_element(elements, index1, index2):
+def __exchange_element(elements, index1, index2):
     if not elements or index1 == index2:
         return
     
