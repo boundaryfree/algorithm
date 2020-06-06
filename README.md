@@ -8,3 +8,4 @@ Python code for sort algorithms.
 - Merge sort (from up to bottom)
 - Merge sort from bottom to up
 - Quick sort
+- Heap sort
