@@ -10,3 +10,5 @@ Python code for algorithms.
   - Merge sort from bottom to up
   - Quick sort
   - Heap sort
+
+- Binary Search Tree
